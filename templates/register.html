@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ثبت‌نام - دستیار هوشمند فارسی</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='auth.css') }}">
+</head>
+<body>
+    <!-- Stars Background -->
+    <div class="stars" id="stars"></div>
+    
+    <div class="auth-container">
+        <div class="auth-box">
+            <h1>ایجاد حساب کاربری</h1>
+            
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-error">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            <!-- Social Registration -->
+            <div class="social-login">
+                <a href="{{ url_for('google_login') }}" class="social-button google-button">
+                    <i class="fab fa-google" style="margin-left: 10px;"></i> ثبت‌نام با گوگل
+                </a>
+                <a href="{{ url_for('github_login') }}" class="social-button github-button">
+                    <i class="fab fa-github" style="margin-left: 10px;"></i> ثبت‌نام با گیت‌هاب
+                </a>
+            </div>
+            
+            <div class="divider">
+                <span>یا</span>
+            </div>
+            
+            <form method="POST" action="{{ url_for('register') }}" class="auth-form">
+                <div class="form-group">
+                    <label for="username">نام کاربری</label>
+                    <input type="text" id="username" name="username" required minlength="3" maxlength="30" pattern="[A-Za-z0-9_-]+" title="فقط حروف انگلیسی، اعداد، خط تیره و زیرخط مجاز است" autocomplete="username">
+                    <small class="form-help">حداقل ۳ کاراکتر شامل حروف انگلیسی، اعداد، خط تیره و زیرخط</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">ایمیل</label>
+                    <input type="email" id="email" name="email" required autocomplete="email">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">رمز عبور</label>
+                    <input type="password" id="password" name="password" required minlength="8" autocomplete="new-password">
+                    <small class="form-help">حداقل ۸ کاراکتر شامل حروف و اعداد</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirm_password">تکرار رمز عبور</label>
+                    <input type="password" id="confirm_password" name="confirm_password" required minlength="8" autocomplete="new-password">
+                </div>
+                
+                <button type="submit" class="auth-button">ایجاد حساب</button>
+            </form>
+            
+            <div class="auth-links">
+                <p>قبلاً ثبت‌نام کرده‌اید؟ <a href="{{ url_for('login') }}">ورود به حساب</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Stars Animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const starsContainer = document.getElementById('stars');
+            const starsCount = 200;
+            
+            for (let i = 0; i < starsCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                // Random size between 1 and 4 pixels
+                const size = Math.random() * 3 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                
+                // Random position
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.left = `${Math.random() * 100}%`;
+                
+                // Random twinkle duration between 2 and 8 seconds
+                const twinkleDuration = `${2 + Math.random() * 6}s`;
+                star.style.setProperty('--twinkle-duration', twinkleDuration);
+                
+                starsContainer.appendChild(star);
+            }
+        });
+    
+        // Form validation
+        document.querySelector('.auth-form').addEventListener('submit', function(e) {
+            const password = document.getElementById('password');
+            const confirmPassword = document.getElementById('confirm_password');
+            
+            if (password.value !== confirmPassword.value) {
+                e.preventDefault();
+                alert('رمز عبور و تکرار آن باید یکسان باشند.');
+                return false;
+            }
+            
+            // Password strength validation - at least 8 characters with at least one letter and one number
+            if (password.value.length < 8 || !/[A-Za-z]/.test(password.value) || !/\d/.test(password.value)) {
+                e.preventDefault();
+                alert('رمز عبور باید حداقل ۸ کاراکتر و شامل حداقل یک حرف و یک عدد باشد.');
+                return false;
+            }
+        });
+    </script>
+</body>
+</html> 

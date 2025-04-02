@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دستیار هوشمند فارسی</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='auth.css') }}">
+    <style>
+        :root {
+            --primary-color: #0066FF;
+            --primary-hover: #0052cc;
+            --glow-color: rgba(0, 102, 255, 0.6);
+            --glow-spread: 20px;
+            --border-color: rgba(255, 255, 255, 0.2);
+            --gradient-1: linear-gradient(45deg, #12c2e9, #c471ed, #f64f59);
+            --gradient-2: linear-gradient(45deg, #00dbde, #fc00ff);
+            --gradient-3: linear-gradient(45deg, #8A2387, #E94057, #F27121);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            color: white;
+            font-family: 'Vazirmatn', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Stars Animation */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle var(--twinkle-duration) infinite ease-in-out;
+        }
+        
+        @keyframes twinkle {
+            0% { opacity: 0.2; }
+            50% { opacity: 1; }
+            100% { opacity: 0.2; }
+        }
+
+        /* Main Container */
+        .landing-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header Animation */
+        .animated-header {
+            position: relative;
+            margin: 4rem 0;
+            padding: 3rem;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            text-align: center;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(0, 102, 255, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 10;
+        }
+
+        .animated-header::before {
+            content: "";
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            z-index: -1;
+            background: var(--gradient-1);
+            background-size: 300% 300%;
+            border-radius: 25px;
+            animation: animatedgradient 8s ease infinite;
+            filter: blur(5px);
+        }
+        
+        @keyframes animatedgradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .header-title {
+            font-size: 4rem;
+            margin: 0 0 1rem;
+            background: linear-gradient(to right, #12c2e9, #c471ed, #f64f59);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 10px rgba(18, 194, 233, 0.6), 0 0 20px rgba(196, 113, 237, 0.6), 0 0 30px rgba(246, 79, 89, 0.6); }
+            to { text-shadow: 0 0 20px rgba(18, 194, 233, 0.8), 0 0 40px rgba(196, 113, 237, 0.8), 0 0 60px rgba(246, 79, 89, 0.8); }
+        }
+
+        .header-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+            animation: fadeIn 1s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin: 3rem 0;
+        }
+
+        .action-button {
+            position: relative;
+            padding: 0.85rem 2rem;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: white;
+            background-color: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+
+        .action-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-2);
+            background-size: 200% 200%;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: -1;
+        }
+
+        .action-button:hover:before {
+            opacity: 1;
+            animation: gradientShift 2s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .action-button:hover {
+            border-color: transparent;
+            box-shadow: 0 0 20px rgba(0, 219, 222, 0.5);
+            transform: translateY(-3px);
+        }
+
+        .primary-button:before {
+            background: var(--gradient-2);
+            opacity: 1;
+        }
+
+        .secondary-button:before {
+            background: var(--gradient-3);
+        }
+
+        /* Features Section */
+        .features-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin: 6rem 0 4rem;
+            background: linear-gradient(to right, #00dbde, #fc00ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .feature-card {
+            position: relative;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .feature-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 16px;
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: all 0.6s ease;
+        }
+
+        .feature-card:hover::after {
+            transform: translateX(100%);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .feature-description {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.7;
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-title {
+                font-size: 2.5rem;
+            }
+
+            .header-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .action-button {
+                width: 100%;
+                max-width: 300px;
+                text-align: center;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .animated-header {
+                padding: 2rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Stars Background -->
+    <div class="stars" id="stars"></div>
+
+    <div class="landing-container">
+        <!-- Animated Header -->
+        <div class="animated-header">
+            <div class="header-content">
+                <h1 class="header-title">دستیار هوشمند فارسی</h1>
+                <p class="header-subtitle">به دنیای هوشمند AI خوش آمدید. با استفاده از قدرت هوش مصنوعی، ما به شما کمک می‌کنیم تا به سادگی با اطلاعات، خلاقیت و راهکارهای هوشمند، به اهداف خود دست یابید.</p>
+                
+                <div class="action-buttons">
+                    <a href="{{ url_for('login') }}" class="action-button primary-button">
+                        <span>ورود به حساب کاربری</span>
+                    </a>
+                    <a href="{{ url_for('register') }}" class="action-button secondary-button">
+                        <span>ایجاد حساب جدید</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <h2 class="features-title">قابلیت‌های ما</h2>
+        <div class="features">
+            <div class="feature-card float-animation" style="animation-delay: 0s;">
+                <div class="feature-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3 class="feature-title">هوش مصنوعی پیشرفته</h3>
+                <p class="feature-description">با استفاده از جدیدترین فناوری‌های هوش مصنوعی، پاسخ‌های دقیق و مفید به سؤالات شما ارائه می‌دهیم.</p>
+            </div>
+            
+            <div class="feature-card float-animation" style="animation-delay: 0.5s;">
+                <div class="feature-icon">
+                    <i class="fas fa-language"></i>
+                </div>
+                <h3 class="feature-title">پشتیبانی کامل فارسی</h3>
+                <p class="feature-description">تمام مکالمات به زبان فارسی انجام می‌شود و از خط و نگارش فارسی به طور کامل پشتیبانی می‌کنیم.</p>
+            </div>
+            
+            <div class="feature-card float-animation" style="animation-delay: 1s;">
+                <div class="feature-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h3 class="feature-title">امنیت و حریم خصوصی</h3>
+                <p class="feature-description">اطلاعات شما با بالاترین استانداردهای امنیتی محافظت می‌شود و حریم خصوصی شما برای ما اولویت است.</p>
+            </div>
+            
+            <div class="feature-card float-animation" style="animation-delay: 1.5s;">
+                <div class="feature-icon">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+                <h3 class="feature-title">آپلود فایل و تصویر</h3>
+                <p class="feature-description">امکان آپلود فایل‌ها و تصاویر برای تحلیل و پردازش محتوا با هوش مصنوعی پیشرفته.</p>
+            </div>
+            
+            <div class="feature-card float-animation" style="animation-delay: 2s;">
+                <div class="feature-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3 class="feature-title">جستجوی وب</h3>
+                <p class="feature-description">جستجوی آنلاین برای یافتن اطلاعات دقیق و به‌روز با استفاده از قدرت هوش مصنوعی.</p>
+            </div>
+            
+            <div class="feature-card float-animation" style="animation-delay: 2.5s;">
+                <div class="feature-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h3 class="feature-title">پشتیبانی از کد و فرمول</h3>
+                <p class="feature-description">نمایش زیبای کدهای برنامه‌نویسی و فرمول‌های ریاضی برای کاربردهای علمی و فنی.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for Stars Animation -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const starsContainer = document.getElementById('stars');
+            const starsCount = 200;
+            
+            for (let i = 0; i < starsCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                // Random size between 1 and 4 pixels
+                const size = Math.random() * 3 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                
+                // Random position
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.left = `${Math.random() * 100}%`;
+                
+                // Random twinkle duration between 2 and 8 seconds
+                const twinkleDuration = `${2 + Math.random() * 6}s`;
+                star.style.setProperty('--twinkle-duration', twinkleDuration);
+                
+                starsContainer.appendChild(star);
+            }
+        });
+    </script>
+</body>
+</html> 

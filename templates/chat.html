@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>گفتگو - دستیار هوشمند فارسی</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- Stars Background -->
+    <div class="stars" id="stars"></div>
+    
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <h2 class="gradient-text">دستیار هوشمند</h2>
+                </div>
+                <button id="new-chat" class="new-chat-button glow-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    گفتگوی جدید
+                </button>
+            </div>
+            
+            <div class="conversations-list">
+                {% for conv in conversations %}
+                <a href="{{ url_for('chat', conversation_id=conv.id) }}" class="conversation-item {% if conv.id == current_conversation_id %}active{% endif %}">
+                    <div class="conversation-info">
+                        <div class="conversation-title">{{ conv.title }}</div>
+                        <div class="conversation-preview">{{ conv.last_message }}</div>
+                        <div class="conversation-meta">
+                            <span class="message-count">{{ conv.message_count }} پیام</span>
+                            <span class="conversation-date">{{ conv.created_at.strftime('%Y/%m/%d') }}</span>
+                        </div>
+                    </div>
+                    <div class="conversation-actions">
+                        <button class="edit-title" data-id="{{ conv.id }}" title="ویرایش عنوان">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                            </svg>
+                        </button>
+                        <button class="delete-conversation" data-id="{{ conv.id }}" title="حذف گفتگو">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="3 6 5 6 21 6"></polyline>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <span class="username gradient-text">{{ current_user.username }}</span>
+                    <a href="{{ url_for('logout') }}" class="logout-button">
+                        <i class="fas fa-sign-out-alt"></i> خروج
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main class="chat-area">
+            <header class="chat-header animated-header">
+                <button id="toggle-sidebar" class="toggle-sidebar" title="نمایش/مخفی کردن منو">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <h1 class="chat-title gradient-text">
+                    {% if current_conversation_id %}
+                        {% for conv in conversations %}
+                            {% if conv.id == current_conversation_id %}
+                                {{ conv.title }}
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        گفتگوی جدید
+                    {% endif %}
+                </h1>
+            </header>
+
+            <div class="chat-messages" id="chat-messages">
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="message {% if message.role == 'user' %}user-message{% else %}bot-message{% endif %}">
+                        <div class="message-content markdown-body">
+                            {{ message.content | safe }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="welcome-message">
+                        <div class="welcome-header">
+                            <h2 class="gradient-text">به دستیار هوشمند فارسی خوش آمدید! 👋</h2>
+                            <div class="glow-line"></div>
+                        </div>
+                        <p>من آماده‌ام تا به سؤالات شما پاسخ دهم و در انجام کارهای مختلف کمک کنم.</p>
+                        <p>می‌توانید از قابلیت‌های زیر استفاده کنید:</p>
+                        <div class="features-grid">
+                            <div class="feature-card">
+                                <i class="fas fa-search feature-icon"></i>
+                                <h3>جستجو در وب</h3>
+                                <p>برای جستجوی اطلاعات از دکمه جستجو استفاده کنید</p>
+                            </div>
+                            <div class="feature-card">
+                                <i class="fas fa-file-upload feature-icon"></i>
+                                <h3>آپلود فایل و تصویر</h3>
+                                <p>فایل‌ها را با دکمه آپلود یا کشیدن و رها کردن ارسال کنید</p>
+                            </div>
+                            <div class="feature-card">
+                                <i class="fas fa-square-root-alt feature-icon"></i>
+                                <h3>پردازش فرمول‌های ریاضی</h3>
+                                <p>فرمول‌های ریاضی را با فرمت LaTeX وارد کنید</p>
+                            </div>
+                            <div class="feature-card">
+                                <i class="fas fa-code feature-icon"></i>
+                                <h3>نمایش کد</h3>
+                                <p>کد شما با قالب‌بندی زیبا نمایش داده می‌شود</p>
+                            </div>
+                        </div>
+                        <div class="chat-tips">
+                            <h3>راهنمای فرمت‌دهی متن:</h3>
+                            <div class="formatting-examples">
+                                <div class="format-item">
+                                    <code>**متن پررنگ**</code> → <strong>متن پررنگ</strong>
+                                </div>
+                                <div class="format-item">
+                                    <code>*متن مورب*</code> → <em>متن مورب</em>
+                                </div>
+                                <div class="format-item">
+                                    <code># عنوان</code> → <strong>عنوان بزرگ</strong>
+                                </div>
+                                <div class="format-item">
+                                    <code>```کد```</code> → بلوک کد با رنگ‌آمیزی نحوی
+                                </div>
+                                <div class="format-item">
+                                    <code>$x^2 + y^2 = z^2$</code> → فرمول ریاضی
+                                </div>
+                                <div class="format-item">
+                                    <code>---</code> → خط افقی
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Typing Indicator -->
+            <div id="typing-indicator" class="typing-indicator" style="display: none;">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            </div>
+
+            <footer class="chat-input">
+                <!-- Input Buttons - منتقل شده به بالای باکس -->
+                <div class="input-buttons">
+                    <button class="thinker-button" id="thinker-toggle" title="تغییر مدل هوش مصنوعی">
+                        <i class="fas fa-brain"></i>
+                    </button>
+                    <button id="send-button" class="send-button glow-button" title="ارسال پیام">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                
+                <!-- Formatting Tools -->
+                <div class="formatting-toolbar" id="formatting-toolbar">
+                    <button class="format-btn" title="متن پررنگ" data-format="bold">
+                        <i class="fas fa-bold"></i>
+                    </button>
+                    <button class="format-btn" title="متن مورب" data-format="italic">
+                        <i class="fas fa-italic"></i>
+                    </button>
+                    <button class="format-btn" title="عنوان" data-format="heading">
+                        <i class="fas fa-heading"></i>
+                    </button>
+                    <button class="format-btn" title="لیست" data-format="list">
+                        <i class="fas fa-list-ul"></i>
+                    </button>
+                    <button class="format-btn" title="بلوک کد" data-format="code">
+                        <i class="fas fa-code"></i>
+                    </button>
+                    <button class="format-btn" title="فرمول ریاضی" data-format="math">
+                        <i class="fas fa-square-root-alt"></i>
+                    </button>
+                    <button class="format-btn" title="خط افقی" data-format="hr">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+                
+                <div class="input-container">
+                    <textarea id="user-input" placeholder="پیام خود را بنویسید..." rows="1" class="animated-input"></textarea>
+                </div>
+                
+            </footer>
+        </main>
+    </div>
+
+    <!-- Message Preview Modal -->
+    <div id="preview-modal" class="preview-modal">
+        <div class="preview-content">
+            <div class="preview-header">
+                <h3>پیش‌نمایش پیام</h3>
+                <button id="close-preview" class="close-preview" title="بستن پیش‌نمایش">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="preview-body" class="preview-body markdown-body"></div>
+            <div class="preview-footer">
+                <button id="send-preview" class="send-button glow-button">ارسال</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    
+    <!-- Stars Animation Script -->
+    <script>
+        // Generate stars for the background
+        function generateStars() {
+            const stars = document.getElementById('stars');
+            const count = 150;
+            
+            for (let i = 0; i < count; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.width = star.style.height = `${Math.random() * 2 + 1}px`;
+                star.style.animationDuration = `${Math.random() * 5 + 5}s`;
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                stars.appendChild(star);
+            }
+        }
+        
+        // Call on page load
+        document.addEventListener('DOMContentLoaded', generateStars);
+    </script>
+</body>
+</html> 

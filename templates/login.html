@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ورود - دستیار هوشمند فارسی</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='auth.css') }}">
+</head>
+<body>
+    <!-- Stars Background -->
+    <div class="stars" id="stars"></div>
+    
+    <div class="auth-container">
+        <div class="auth-box">
+            <h1>ورود به حساب کاربری</h1>
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            <!-- Social Login Buttons -->
+            <div class="social-login">
+                <a href="{{ url_for('google_login') }}" class="social-button google-button">
+                    <i class="fab fa-google" style="margin-left: 10px;"></i> ورود با گوگل
+                </a>
+                <a href="{{ url_for('github_login') }}" class="social-button github-button">
+                    <i class="fab fa-github" style="margin-left: 10px;"></i> ورود با گیت‌هاب
+                </a>
+            </div>
+            
+            <div class="divider">
+                <span>یا</span>
+            </div>
+            
+            <form method="POST" action="{{ url_for('login') }}" class="auth-form">
+                <div class="form-group">
+                    <label for="email">ایمیل:</label>
+                    <input type="email" id="email" name="email" required autocomplete="email">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">رمز عبور:</label>
+                    <input type="password" id="password" name="password" required autocomplete="current-password">
+                </div>
+                
+                <button type="submit" class="auth-button">ورود به حساب</button>
+            </form>
+            
+            <div class="auth-links">
+                <p>حساب کاربری ندارید؟ <a href="{{ url_for('register') }}">ثبت‌نام</a></p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- JavaScript for Stars Animation -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const starsContainer = document.getElementById('stars');
+            const starsCount = 200;
+            
+            for (let i = 0; i < starsCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                // Random size between 1 and 4 pixels
+                const size = Math.random() * 3 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                
+                // Random position
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.left = `${Math.random() * 100}%`;
+                
+                // Random twinkle duration between 2 and 8 seconds
+                const twinkleDuration = `${2 + Math.random() * 6}s`;
+                star.style.setProperty('--twinkle-duration', twinkleDuration);
+                
+                starsContainer.appendChild(star);
+            }
+        });
+    </script>
+</body>
+</html> 

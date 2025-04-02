@@ -1,0 +1,2512 @@
+:root {
+    --primary-gradient: linear-gradient(135deg, #6e8efb, #a777e3);
+    --primary-color: #6e8efb;
+    --primary-hover: #5d7ce7;
+    --background-gradient: linear-gradient(135deg, #1a1f2c, #2d3436);
+    --sidebar-bg: rgba(255, 255, 255, 0.1);
+    --chat-bg: rgba(255, 255, 255, 0.05);
+    --text-color: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --message-user-bg: linear-gradient(135deg, #6e8efb33, #a777e333);
+    --message-bot-bg: rgba(255, 255, 255, 0.05);
+    --shadow-glow: 0 0 20px rgba(110, 142, 251, 0.1);
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+    --radius-sm: 12px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --font-family: 'Vazirmatn', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --code-font: 'Fira Code', monospace;
+}
+
+[data-theme="dark"] {
+    --primary-color: #4D9FFF;
+    --background-color: #1A1A1A;
+    --text-color: #F8F9FA;
+    --secondary-text: #ADB5BD;
+    --border-color: #2D2D2D;
+    --code-bg: #2D2D2D;
+    --thoughts-bg: #2D2D2D;
+}
+
+/* تم روشن برای نمایش در محیط‌های مختلف */
+[data-theme="light"] {
+    --primary-color: #0066CC;
+    --background-color: #F8F9FA;
+    --text-color: #212529;
+    --secondary-text: #495057;
+    --border-color: #DEE2E6;
+    --code-bg: #EDEDED;
+    --thoughts-bg: #EDEDED;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family);
+    background: var(--background-gradient);
+    color: var(--text-color);
+    line-height: 1.5;
+    direction: rtl;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    transition: all 0.3s ease;
+}
+
+.app-container {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 300px;
+    background: var(--sidebar-bg);
+    border-left: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-header {
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sidebar-header h2 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.new-chat-button {
+    background: var(--primary-gradient);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 0.75rem;
+    font-family: var(--font-family);
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-glow);
+    position: relative;
+    overflow: hidden;
+}
+
+.new-chat-button::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    transform: rotate(45deg);
+    animation: shine 3s infinite;
+}
+
+@keyframes shine {
+    0% {
+        transform: translateX(-100%) rotate(45deg);
+    }
+    100% {
+        transform: translateX(100%) rotate(45deg);
+    }
+}
+
+.conversations-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+.conversation-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin: 5px 10px;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all 0.2s ease;
+}
+
+.conversation-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(3px);
+}
+
+.conversation-item.active {
+    background-color: var(--active-color);
+}
+
+.conversation-info {
+    flex: 1;
+    min-width: 0;
+    margin-left: 1rem;
+}
+
+.conversation-title {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.conversation-preview {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.conversation-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.message-count {
+    background-color: var(--hover-color);
+    padding: 0.125rem 0.5rem;
+    border-radius: 1rem;
+}
+
+.conversation-date {
+    color: var(--text-secondary);
+}
+
+.conversation-actions {
+    display: flex;
+    gap: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.conversation-item:hover .conversation-actions {
+    opacity: 1;
+}
+
+.conversation-actions button {
+    padding: 0.25rem;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: background-color 0.2s;
+}
+
+.conversation-actions button:hover {
+    background-color: var(--hover-color);
+    color: var(--text-primary);
+}
+
+.sidebar-footer {
+    padding: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.username {
+    font-weight: 500;
+}
+
+.logout-button {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.logout-button:hover {
+    color: var(--text-color);
+}
+
+/* Chat Area Styles */
+.chat-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--chat-bg);
+}
+
+.chat-header {
+    background: var(--primary-gradient);
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-glow);
+}
+
+.chat-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    animation: headerShine 4s infinite;
+}
+
+@keyframes headerShine {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.toggle-sidebar {
+    background: none;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: transform 0.3s ease;
+    z-index: 1001;
+}
+
+.toggle-sidebar:hover {
+    color: var(--text-color);
+}
+
+.chat-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.message {
+    max-width: 80%;
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    animation: messageSlide 0.3s ease;
+}
+
+@keyframes messageSlide {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.user-message {
+    background-color: var(--message-user-bg);
+    align-self: flex-end;
+    border-bottom-left-radius: var(--radius-md);
+    border-bottom-right-radius: var(--radius-sm);
+    border-top-left-radius: var(--radius-md);
+    border-top-right-radius: var(--radius-md);
+}
+
+.bot-message {
+    background-color: var(--message-bot-bg);
+    align-self: flex-start;
+    border: 1px solid var(--border-color);
+    border-bottom-left-radius: var(--radius-sm);
+    border-bottom-right-radius: var(--radius-md);
+    border-top-left-radius: var(--radius-md);
+    border-top-right-radius: var(--radius-md);
+}
+
+.message-content {
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.message-content pre {
+    background-color: #1E1E1E;
+    border-radius: var(--radius-sm);
+    padding: 1rem;
+    margin: 0.5rem 0;
+    overflow-x: auto;
+}
+
+.message-content code {
+    font-family: var(--code-font);
+    font-size: 0.9rem;
+}
+
+.welcome-message {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-color);
+    animation: fadeIn 1s ease;
+}
+
+.welcome-message h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientText 3s infinite;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes gradientText {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Typing Indicator */
+.typing-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 1rem;
+}
+
+.typing-dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--text-secondary);
+    border-radius: 50%;
+    animation: typing 1s infinite;
+}
+
+.typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typing {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-4px);
+    }
+}
+
+/* Chat Input */
+.chat-input {
+    padding: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.input-container {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-md);
+    padding: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-end;
+    box-shadow: var(--shadow-glow);
+    border: 1px solid var(--border-color);
+}
+
+#user-input {
+    flex: 1;
+    padding: 0.75rem;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-family);
+    font-size: 1rem;
+    resize: none;
+    max-height: 150px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-color);
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#user-input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+}
+
+.send-button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.send-button:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.send-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* File Upload Area */
+.file-upload {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.file-upload-button {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 0.5rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.file-upload-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.file-upload-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Web Search Button */
+.web-search-button {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 0.5rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.web-search-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.web-search-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--border-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--text-secondary);
+}
+
+/* Markdown Styles */
+.markdown-body {
+    line-height: 1.6;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.markdown-body h3 {
+    font-size: 1.1em;
+    color: var(--primary-color);
+}
+
+.markdown-body p {
+    margin-bottom: 0.8em;
+}
+
+.markdown-body strong {
+    font-weight: 600;
+}
+
+.markdown-body hr {
+    height: 2px;
+    background-color: var(--border-color);
+    border: none;
+    margin: 2em 0;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+    padding-right: 1.5em;
+    margin-bottom: 1em;
+}
+
+.markdown-body li {
+    margin-bottom: 0.5em;
+}
+
+.markdown-body code {
+    font-family: 'Fira Code', monospace;
+    background-color: var(--code-bg);
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-size: 0.9em;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+}
+
+.markdown-body pre {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 1rem;
+    position: relative;
+}
+
+.markdown-body pre code {
+    color: #e0e0e0;
+    font-family: var(--code-font);
+    font-size: 0.9rem;
+}
+
+.user-message .markdown-body h3,
+.user-message .markdown-body strong {
+    color: white;
+}
+
+.user-message .markdown-body hr {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Math Formula Styling */
+.math-inline {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.2em 0.4em;
+    border-radius: var(--radius-sm);
+    font-family: 'KaTeX_Math', serif;
+}
+
+.math-display {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem;
+    border-radius: var(--radius-sm);
+    margin: 1rem 0;
+    overflow-x: auto;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 85%;
+        max-width: 320px;
+        height: 100%;
+        transform: translateX(100%);
+        z-index: 1000;
+        box-shadow: none;
+        transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1), 
+                    box-shadow 0.3s ease;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 1rem;
+    }
+    
+    .sidebar.active {
+        transform: translateX(0);
+        box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
+    }
+    
+    .chat-area {
+        width: 100%;
+        transition: transform 0.3s ease;
+    }
+    
+    /* افزودن پس‌زمینه تیره وقتی منو باز است */
+    .sidebar.active::after {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(3px);
+        z-index: -1;
+        animation: fadeIn 0.3s forwards;
+    }
+}
+
+/* چرخش آیکون منو هنگام باز شدن */
+.sidebar.active + .chat-area .toggle-sidebar {
+    transform: rotate(180deg);
+}
+
+/* بهبود استایل‌های دکمه‌ها برای لمس در موبایل */
+.button, button, .send-button, .file-upload-button, .web-search-button {
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.button:hover, button:hover, .send-button:hover, .file-upload-button:hover, .web-search-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.button:active, button:active, .send-button:active, .file-upload-button:active, .web-search-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* افکت موج برای کلیک روی دکمه‌ها */
+.ripple {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple 0.6s linear;
+    pointer-events: none;
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* انیمیشن ظاهر شدن پیام‌ها */
+@keyframes message-appear {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* اعمال انیمیشن به پیام‌ها */
+.message {
+    animation: message-appear 0.3s ease forwards;
+}
+
+/* Stars Background */
+.stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.star {
+    position: absolute;
+    background-color: white;
+    border-radius: 50%;
+    animation: twinkle linear infinite;
+}
+
+@keyframes twinkle {
+    0% { opacity: 0.3; }
+    50% { opacity: 1; }
+    100% { opacity: 0.3; }
+}
+
+/* Gradient text effect */
+.gradient-text {
+    background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 10px rgba(var(--primary-color-rgb), 0.3);
+    animation: textShine 3s linear infinite;
+}
+
+@keyframes textShine {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Glow effects */
+.glow-button {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(45deg, var(--gradient-1), var(--gradient-2));
+    border: none;
+    box-shadow: 0 0 10px rgba(var(--primary-color-rgb), 0.5);
+    transition: all 0.3s ease;
+}
+
+.glow-button:hover {
+    box-shadow: 0 0 15px rgba(var(--primary-color-rgb), 0.8);
+    transform: translateY(-2px);
+}
+
+.glow-button:before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
+    transform: rotate(30deg);
+    animation: shimmer 3s linear infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.glow-button:hover:before {
+    opacity: 1;
+}
+
+@keyframes shimmer {
+    0% { transform: rotate(30deg) translateX(-100%); }
+    100% { transform: rotate(30deg) translateX(100%); }
+}
+
+.glow-line {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+    margin: 10px auto;
+    width: 80%;
+    max-width: 200px;
+    border-radius: 1px;
+    animation: glowPulse 2s infinite;
+}
+
+@keyframes glowPulse {
+    0% { opacity: 0.6; box-shadow: 0 0 5px rgba(var(--primary-color-rgb), 0.5); }
+    50% { opacity: 1; box-shadow: 0 0 10px rgba(var(--primary-color-rgb), 0.8); }
+    100% { opacity: 0.6; box-shadow: 0 0 5px rgba(var(--primary-color-rgb), 0.5); }
+}
+
+/* Feature Cards */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.feature-card {
+    background: rgba(30, 30, 40, 0.6);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(var(--accent-color-rgb), 0.1);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    animation: float 6s ease-in-out infinite;
+}
+
+.feature-card:nth-child(2) {
+    animation-delay: 1s;
+}
+
+.feature-card:nth-child(3) {
+    animation-delay: 2s;
+}
+
+.feature-card:nth-child(4) {
+    animation-delay: 3s;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3);
+    border-color: rgba(var(--accent-color-rgb), 0.3);
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(var(--primary-color-rgb), 0.1) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.feature-card:hover::before {
+    opacity: 1;
+}
+
+.feature-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: var(--accent-color);
+    text-shadow: 0 0 10px rgba(var(--accent-color-rgb), 0.5);
+}
+
+.feature-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.feature-card p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 0;
+}
+
+/* Formatting Toolbar */
+.formatting-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 8px;
+    background: rgba(20, 20, 30, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 10px 10px 0 0;
+    border: 1px solid rgba(var(--accent-color-rgb), 0.1);
+    border-bottom: none;
+    margin-bottom: -1px;
+    transition: all 0.3s ease;
+    overflow-x: auto;
+    max-width: 100%;
+    display: none;
+}
+
+.formatting-toolbar.active {
+    display: flex;
+}
+
+.format-btn {
+    background: rgba(40, 40, 50, 0.6);
+    border: none;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    padding: 5px 10px;
+    border-radius: 6px;
+    margin-right: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.format-btn:hover {
+    background: rgba(60, 60, 70, 0.8);
+    color: var(--text-primary);
+    transform: translateY(-2px);
+}
+
+.format-btn:active {
+    transform: translateY(0);
+}
+
+.format-toggle-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    padding: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.format-toggle-btn:hover {
+    color: var(--primary-color);
+    transform: rotate(15deg);
+}
+
+/* Chat tips and formatting examples */
+.chat-tips {
+    margin-top: 20px;
+    background: rgba(30, 30, 40, 0.6);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 12px;
+    padding: 15px;
+    border: 1px solid rgba(var(--accent-color-rgb), 0.1);
+}
+
+.chat-tips h3 {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+}
+
+.formatting-examples {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+}
+
+.format-item {
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+    background: rgba(40, 40, 50, 0.5);
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+.format-item code {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 3px 5px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    color: #f8f8f2;
+    font-family: 'Fira Code', monospace;
+}
+
+/* Welcome message */
+.welcome-message {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    animation: fadeIn 0.6s ease-out;
+}
+
+.welcome-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.welcome-header h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+/* Preview Modal */
+.preview-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.preview-content {
+    background: var(--bg-secondary);
+    width: 90%;
+    max-width: 700px;
+    max-height: 80vh;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+}
+
+.preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: var(--bg-tertiary);
+    border-bottom: 1px solid rgba(var(--accent-color-rgb), 0.1);
+}
+
+.preview-header h3 {
+    margin: 0;
+    color: var(--text-primary);
+}
+
+.close-preview {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-preview:hover {
+    color: var(--text-primary);
+}
+
+.preview-body {
+    padding: 20px;
+    overflow-y: auto;
+    flex-grow: 1;
+    background: var(--bg-secondary);
+}
+
+.preview-footer {
+    padding: 15px;
+    display: flex;
+    justify-content: flex-end;
+    background: var(--bg-tertiary);
+    border-top: 1px solid rgba(var(--accent-color-rgb), 0.1);
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .formatting-toolbar {
+        justify-content: center;
+    }
+    
+    .format-btn {
+        margin: 3px;
+        padding: 8px;
+    }
+    
+    .format-btn i {
+        font-size: 1.1rem;
+    }
+    
+    .format-btn span {
+        display: none;
+    }
+    
+    .input-container {
+        padding: 10px;
+    }
+    
+    .chat-input {
+        padding-bottom: 10px;
+    }
+    
+    .preview-content {
+        width: 95%;
+    }
+}
+
+/* Android and Mobile Optimizations */
+@media (max-width: 480px) {
+    .app-container {
+        height: 100%;
+        overflow: hidden;
+    }
+    
+    .sidebar {
+        width: 85%;
+        max-width: 280px;
+        transform: translateX(-100%);
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        z-index: 100;
+        box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    .sidebar.active {
+        transform: translateX(0);
+    }
+    
+    .chat-area {
+        width: 100%;
+        margin-left: 0;
+    }
+    
+    .chat-header {
+        padding: 10px 12px;
+    }
+    
+    .chat-title {
+        font-size: 1.3rem;
+    }
+    
+    .feature-card {
+        padding: 12px;
+        margin-bottom: 10px;
+    }
+    
+    .formatting-examples {
+        grid-template-columns: 1fr;
+    }
+    
+    .input-container {
+        padding: 8px;
+    }
+    
+    .input-buttons {
+        gap: 5px;
+    }
+    
+    .formatting-toolbar {
+        overflow-x: auto;
+        justify-content: start;
+        padding: 6px;
+    }
+    
+    .format-btn {
+        min-width: 36px;
+        height: 36px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 3px;
+    }
+    
+    /* Improve touch targets for mobile */
+    .send-button, 
+    .file-upload-button, 
+    .web-search-button,
+    .format-toggle-btn {
+        min-width: 40px;
+        min-height: 40px;
+    }
+    
+    /* Keyboard visible adjustments */
+    @supports (-webkit-touch-callout: none) {
+        .chat-input {
+            position: sticky;
+            bottom: 0;
+        }
+        
+        .app-container {
+            height: calc(100% - env(keyboard-inset-height, 0px));
+        }
+    }
+}
+
+/* Fix for Android browsers */
+@supports (-webkit-appearance:none) {
+    .message-content pre {
+        white-space: pre-wrap;
+        word-break: break-all;
+    }
+    
+    .chat-messages {
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Make sure buttons are easily clickable on touch devices */
+    button {
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* Better scrolling on Android */
+    * {
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Prevent pinch zoom on text fields */
+    input, textarea {
+        touch-action: manipulation;
+    }
+}
+
+/* Fix scroll issues when keyboard shows up */
+@media (max-height: 500px) {
+    .chat-area {
+        grid-template-rows: auto 1fr auto;
+    }
+    
+    .chat-messages {
+        max-height: calc(100vh - 120px);
+    }
+}
+
+/* Dark theme enhancements for better mobile reading */
+@media (prefers-color-scheme: dark) {
+    .message-content code {
+        background-color: #2d2d3d !important;
+    }
+    
+    .message-content pre {
+        background-color: #1e1e2e !important;
+    }
+}
+
+/* Animation performance optimizations for mobile */
+@media (pointer: coarse) {
+    .star {
+        will-change: opacity;
+    }
+    
+    .feature-card {
+        animation: none !important;
+        transform: none !important;
+    }
+    
+    .feature-card:hover {
+        transform: none !important;
+    }
+    
+    .glow-button:before {
+        animation: none;
+    }
+}
+
+/* Add these styles for file uploads and web search */
+
+/* File upload styles */
+.file-preview {
+    margin-bottom: 10px;
+}
+
+.file-preview-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.file-name {
+    margin: 8px 0;
+    font-size: 0.9rem;
+    word-break: break-word;
+    text-align: center;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 5px;
+}
+
+.progress {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+.file-icon {
+    font-size: 2.5rem;
+    color: var(--accent-color);
+    margin-bottom: 10px;
+}
+
+.uploaded-files {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.uploaded-file {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.file-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text-color);
+    padding: 10px;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+
+.file-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Web search styles */
+.search-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    color: var(--text-secondary);
+}
+
+.search-indicator i {
+    margin-left: 10px;
+    color: var(--primary-color);
+}
+
+.search-results {
+    border-top: 1px solid var(--border-color);
+    margin-top: 10px;
+    padding-top: 10px;
+}
+
+.search-result-item {
+    margin-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 15px;
+}
+
+.search-result-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.search-result-snippet {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.search-result-url {
+    font-size: 0.8rem;
+    color: var(--accent-color);
+    word-break: break-all;
+}
+
+/* Math Block Styling */
+.math-block {
+    overflow-x: auto;
+    padding: 15px;
+    margin: 15px 0;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: var(--radius-sm);
+    text-align: center;
+    direction: ltr !important;
+    display: block;
+}
+
+/* Boxed math formula style */
+.boxed-math .katex {
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    padding: 10px;
+    border-radius: var(--radius-sm);
+    display: inline-block;
+    margin: 5px 0;
+}
+
+/* KaTeX specific fixes */
+.katex {
+    font-size: 1.1em !important; 
+    direction: ltr !important;
+    display: inline-block !important;
+}
+
+.katex-display {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 10px 0;
+    margin: 0.5em 0 !important;
+}
+
+.katex-display > .katex {
+    display: inline-block !important;
+    white-space: nowrap;
+    text-align: center;
+    max-width: 100%;
+}
+
+/* Make sure RTL content is properly displayed */
+[dir="rtl"] .markdown-body {
+    text-align: right;
+}
+
+/* Ensure math elements are always LTR */
+[dir="rtl"] .math-block,
+[dir="rtl"] .katex-display,
+[dir="rtl"] .katex {
+    direction: ltr !important;
+    text-align: center !important;
+}
+
+/* Ensure bold and other formatting works correctly */
+.markdown-body strong, 
+.markdown-body b {
+    font-weight: 700 !important;
+    display: inline-block;
+}
+
+.markdown-body em,
+.markdown-body i {
+    font-style: italic !important;
+    display: inline-block;
+}
+
+.markdown-body code {
+    direction: ltr;
+    display: inline-block;
+    unicode-bidi: isolate;
+}
+
+.markdown-body pre {
+    direction: ltr;
+    text-align: left;
+    unicode-bidi: isolate;
+}
+
+/* Add compatibility styles for Safari */
+@media not all and (min-resolution:.001dpcm) { 
+    @supports (-webkit-appearance:none) {
+        .math-block {
+            -webkit-transform: translateZ(0);
+        }
+        
+        .katex-display {
+            -webkit-transform: translateZ(0);
+        }
+        
+        /* Fix backdrop filter for Safari */
+        .sidebar, 
+        .preview-modal,
+        .formatting-toolbar {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+    }
+}
+
+/* Force refresh on loaded content */
+.message-content:after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+/* Fix for markdown lists in RTL */
+.markdown-body ul,
+.markdown-body ol {
+    padding-right: 2em;
+    padding-left: 0;
+}
+
+/* Fix code block and pre tag vertical scrolling */
+.markdown-body pre {
+    white-space: pre;
+    overflow-x: auto;
+    max-width: 100%;
+    display: block;
+}
+
+/* Fix for markdown rendering in user and bot messages */
+.message-content > p:first-child {
+    font-family: inherit !important;
+    font-size: inherit !important;
+    background: none !important;
+    color: inherit !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 0 10px 0 !important;
+    white-space: normal !important;
+    direction: inherit !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+    line-height: 1.5 !important;
+    display: block !important;
+}
+
+/* Ensure code blocks are properly displayed only within pre tags */
+.message-content code:not(pre code) {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-family: var(--code-font);
+    font-size: 0.9em;
+}
+
+.message-content pre {
+    background: rgba(0, 0, 0, 0.3) !important;
+    margin: 1em 0 !important;
+}
+
+/* Additional styles for message content and code blocks */
+.message-content > p:first-child {
+    font-family: inherit !important;
+    background: none !important;
+    color: inherit !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin-bottom: 1rem !important;
+    white-space: normal !important;
+    font-weight: normal !important;
+}
+
+/* Ensure inline code is styled properly */
+.message-content code:not(pre code) {
+    direction: ltr !important;
+    display: inline-block !important;
+    unicode-bidi: isolate !important;
+    background-color: rgba(27, 31, 35, 0.05) !important;
+    border-radius: 3px !important;
+    font-family: 'Roboto Mono', monospace !important;
+    font-size: 85% !important;
+    padding: 0.2em 0.4em !important;
+    margin: 0 2px !important;
+}
+
+/* Special handling for RTL inline code */
+.rtl-inline-code {
+    direction: ltr !important;
+    text-align: left !important;
+    display: inline-block !important;
+}
+
+/* Improve code block appearance */
+.message-content pre {
+    direction: ltr !important;
+    border-radius: 8px !important;
+    background-color: #1e1e2e !important;
+    margin: 1em 0 !important;
+    padding: 1em !important;
+    overflow-x: auto !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+    position: relative !important;
+}
+
+.message-content pre code {
+    display: block !important;
+    overflow-x: auto !important;
+    font-family: 'Roboto Mono', monospace !important;
+    font-size: 0.9em !important;
+    color: #f8f8f2 !important;
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    tab-size: 4 !important;
+}
+
+/* Improve math rendering */
+.math-block {
+    overflow-x: auto !important;
+    padding: 10px !important;
+    margin: 10px 0 !important;
+    text-align: center !important;
+    direction: ltr !important;
+}
+
+.boxed-math {
+    border: 2px solid #4a5568 !important;
+    border-radius: 8px !important;
+    background-color: rgba(74, 85, 104, 0.05) !important;
+    padding: 15px !important;
+}
+
+.katex-display {
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    text-align: center !important;
+    padding: 5px 0 !important;
+    direction: ltr !important;
+}
+
+.katex {
+    font-size: 1.1em !important;
+    direction: ltr !important;
+    display: inline-block !important;
+}
+
+[dir="rtl"] .markdown-body {
+    text-align: right !important;
+}
+
+[dir="rtl"] .math-block,
+[dir="rtl"] .katex-display {
+    direction: ltr !important;
+    text-align: center !important;
+    unicode-bidi: isolate !important;
+}
+
+/* Fix typing content animation */
+.typing-content {
+    display: inline-block;
+    min-height: 1.2em;
+    min-width: 0.5em;
+}
+
+/* Improvements for file preview */
+.file-preview {
+    margin: 10px 0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.file-preview-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.file-name {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #e2e8f0;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    margin-top: 10px;
+}
+
+.progress {
+    height: 100%;
+    background: linear-gradient(90deg, #3182ce, #63b3ed);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.file-icon {
+    font-size: 3rem;
+    color: #a0aec0;
+}
+
+.uploaded-files {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.uploaded-file {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    transition: transform 0.2s;
+}
+
+.uploaded-file:hover {
+    transform: translateY(-2px);
+}
+
+.file-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+}
+
+.file-link:hover {
+    color: #63b3ed;
+}
+
+/* Web search styling */
+.search-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    color: #a0aec0;
+}
+
+.search-indicator i {
+    margin-right: 10px;
+}
+
+.search-results {
+    border-left: 3px solid #3182ce;
+    padding-left: 15px;
+    margin: 10px 0;
+}
+
+.search-result-item {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.search-result-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.search-result-snippet {
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+.search-result-url {
+    font-size: 0.8em;
+    color: #63b3ed;
+    word-break: break-all;
+}
+
+.search-footer {
+    text-align: center;
+    color: #a0aec0;
+    font-size: 0.8em;
+    margin-top: 10px;
+}
+
+/* For compatibility with Safari, Firefox, etc. */
+@media not all and (min-resolution:.001dpcm) { 
+    @supports (-webkit-appearance:none) {
+        .math-block {
+            overflow-x: auto !important;
+        }
+        .katex-display {
+            overflow-x: auto !important;
+        }
+    }
+}
+
+/* New animation styles */
+.message-bubble {
+    margin: 10px 0;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%;
+    box-sizing: border-box;
+    overflow: auto;
+    transition: all 0.3s ease;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.message:hover .message-bubble {
+    transform: scale(1.01);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.message-bubble::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 0;
+    background: linear-gradient(to bottom, var(--primary-color, #58a6ff), transparent);
+    transition: height 0.3s ease;
+    border-radius: 3px 0 0 3px;
+}
+
+.message:hover .message-bubble::before {
+    height: 100%;
+}
+
+/* افکت فوکوس متفاوت برای پیام‌های کاربر و بات */
+.user-message .message-bubble::before {
+    background: linear-gradient(to bottom, #7c71f5, transparent);
+}
+
+.bot-message .message-bubble::before {
+    background: linear-gradient(to bottom, #58a6ff, transparent);
+}
+
+/* Particles animation */
+.particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.particle {
+    position: absolute;
+    background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%);
+    border-radius: 50%;
+    opacity: 0.2;
+    filter: blur(2px);
+    animation: float-particle 20s linear infinite;
+}
+
+@keyframes float-particle {
+    0% {
+        transform: translateY(0) translateX(0);
+    }
+    25% {
+        transform: translateY(-30px) translateX(20px);
+    }
+    50% {
+        transform: translateY(-10px) translateX(40px);
+    }
+    75% {
+        transform: translateY(20px) translateX(10px);
+    }
+    100% {
+        transform: translateY(0) translateX(0);
+    }
+}
+
+/* Button ripple effect */
+.ripple {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple 0.6s linear;
+    pointer-events: none;
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(2.5);
+        opacity: 0;
+    }
+}
+
+/* Typing indicator animation */
+.typing-content {
+    position: relative;
+    min-height: 1.2em;
+    display: inline-block;
+}
+
+.typing-content::after {
+    content: '▌';
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+
+/* Improved message styling */
+.bot-message .message-content {
+    position: relative;
+    overflow: hidden;
+}
+
+.bot-message .message-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 0, rgba(59, 130, 246, 0.05), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
+
+.bot-message:hover .message-content::before {
+    opacity: 1;
+}
+
+/* User message pulse effect */
+.user-message {
+    position: relative;
+}
+
+.user-message::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.user-message:hover::after {
+    opacity: 1;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.7;
+    }
+    50% {
+        transform: scale(1.5);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.7;
+    }
+}
+
+/* Fix for first line in messages being shown as code */
+.message-content p:first-child {
+    font-family: inherit !important;
+    font-size: inherit !important;
+    background: none !important;
+    color: inherit !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 0 1rem 0 !important;
+    white-space: normal !important;
+    direction: inherit !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+    line-height: 1.5 !important;
+    display: block !important;
+}
+
+/* Make sure first paragraph of each message is not shown as code */
+.message-content > p:first-of-type {
+    background-color: transparent !important;
+    font-family: inherit !important;
+    border: none !important;
+    padding: 0 !important;
+    white-space: normal !important;
+    overflow-x: visible !important;
+    border-radius: 0 !important;
+}
+
+/* Ensure first line is not treated as code */
+.markdown-body > p:first-child {
+    background: none !important;
+    font-family: inherit !important;
+    color: inherit !important;
+    border: none !important;
+    padding: 0 !important;
+    margin-bottom: 1rem !important;
+    white-space: normal !important;
+    box-shadow: none !important;
+}
+
+/* Normal text class (not code) */
+.normal-text {
+    font-family: inherit !important;
+    font-size: inherit !important;
+    background: none !important;
+    color: inherit !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 0 10px 0 !important;
+    white-space: normal !important;
+    direction: inherit !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+    line-height: 1.5 !important;
+    display: block !important;
+    text-align: inherit !important;
+    width: 100% !important;
+}
+
+/* Ensure code elements inside normal-text don't get code styling */
+.normal-text code,
+.message-content .normal-text code {
+    background: rgba(175, 184, 193, 0.2) !important;
+    border-radius: 6px !important;
+    padding: 0.2em 0.4em !important;
+    font-family: monospace !important;
+    font-size: 85% !important;
+    white-space: break-spaces !important;
+    border: none !important;
+}
+
+/* Style for RTL code elements */
+[dir="rtl"] .normal-text code {
+    display: inline-block;
+    direction: ltr;
+    text-align: left;
+}
+
+/* Style the message bubble properly - fix positioning and overflow */
+.message-bubble {
+    margin-top: 8px !important;
+    border-radius: 12px !important;
+    padding: 12px 16px !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    transition: all 0.3s ease !important;
+    overflow: auto !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    word-break: break-word !important;
+    position: relative !important;
+    clear: both !important;
+}
+
+/* Make sure content is properly managed inside bubbles */
+.message-bubble p {
+    margin: 0.5rem 0 !important;
+    line-height: 1.6 !important;
+    font-family: inherit !important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+}
+
+/* First paragraph in bubble should have no top margin */
+.message-bubble p:first-child {
+    margin-top: 0 !important;
+}
+
+/* Last paragraph in bubble should have no bottom margin */
+.message-bubble p:last-child {
+    margin-bottom: 0 !important;
+}
+
+/* Fix spacing between message content and bubble */
+.message-content > p.normal-text {
+    margin-bottom: 0 !important;
+    padding-bottom: 5px !important;
+    font-weight: 500 !important;
+}
+
+/* Enhanced styling for pre tags inside bubbles */
+.message-bubble pre {
+    margin: 12px 0 !important;
+    padding: 12px !important;
+    border-radius: 8px !important;
+    overflow-x: auto !important;
+    background: rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Make code properly display in bubbles */
+.message-bubble code {
+    direction: ltr !important;
+    display: inline-block !important;
+}
+
+/* Fix any lists in the bubble */
+.message-bubble ul,
+.message-bubble ol {
+    padding-right: 20px !important;
+    padding-left: 20px !important;
+    margin: 10px 0 !important;
+}
+
+/* Fix for RTL languages in bubbles */
+[dir="rtl"] .message-bubble {
+    text-align: right !important;
+}
+
+/* Fix images in bubbles */
+.message-bubble img {
+    max-width: 100% !important;
+    height: auto !important;
+    border-radius: 8px !important;
+    margin: 8px 0 !important;
+}
+
+/* Ensure normal-text never gets code formatting, with high specificity */
+.message-content .normal-text,
+p.normal-text,
+.markdown-body p.normal-text {
+    font-family: inherit !important;
+    font-size: inherit !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    color: inherit !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 0 10px 0 !important;
+    white-space: normal !important;
+    direction: inherit !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+    line-height: 1.5 !important;
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    text-align: inherit !important;
+}
+
+/* Override any code styling within normal-text */
+.normal-text code,
+.message-content .normal-text code {
+    background: rgba(175, 184, 193, 0.2) !important;
+    border-radius: 6px !important;
+    padding: 0.2em 0.4em !important;
+    font-family: monospace !important;
+    font-size: 85% !important;
+    white-space: break-spaces !important;
+    border: none !important;
+}
+
+/* Make sure bubbles are properly styled */
+.message-bubble {
+    background: var(--bubble-bg, rgba(30, 30, 30, 0.1)) !important;
+    border-radius: 12px !important;
+    padding: 12px 16px !important;
+    margin-top: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1)) !important;
+    overflow: auto !important;
+    word-break: break-word !important;
+}
+
+/* بهینه‌سازی منو برای موبایل - جمع شدن پیش‌فرض */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        height: 100%;
+        transition: transform 0.3s ease;
+    }
+    
+    .sidebar.active {
+        transform: translateX(0);
+    }
+    
+    .chat-area {
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    /* ایجاد سایه برای منو در حالت باز */
+    .sidebar.active::after {
+        content: '';
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: -1;
+    }
+}
+
+/* بهبود انیمیشن دکمه باز/بسته کردن منو */
+.sidebar.active + .chat-area .toggle-sidebar {
+    transform: rotate(-180deg);
+}
+
+/* افکت موج دکمه */
+.button, button, .send-button, .file-upload-button, .web-search-button {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.button:hover, button:hover, .send-button:hover, .file-upload-button:hover, .web-search-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.button:active, button:active, .send-button:active, .file-upload-button:active, .web-search-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* افکت موج دکمه */
+.ripple {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple 0.6s linear;
+    pointer-events: none;
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(2.5);
+        opacity: 0;
+    }
+}
+
+/* انیمیشن زیباتر برای حباب پیام */
+@keyframes message-appear {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.message {
+    animation: message-appear 0.3s ease-out forwards;
+}
+
+/* استایل دکمه thinker */
+.thinker-button {
+    background: var(--background-gradient);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    font-size: 16px;
+    margin-right: 8px;
+}
+
+.thinker-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.thinker-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.thinker-button.active {
+    background: linear-gradient(145deg, #4D9FFF, #7b68ee);
+    color: white;
+}
+
+/* استایل برای پیام سیستمی */
+.system-message {
+    padding: 8px 0;
+    opacity: 0.8;
+    animation: system-message-appear 0.3s ease-out forwards;
+}
+
+.system-message .message-content {
+    text-align: center;
+    font-style: italic;
+    color: var(--text-color);
+    opacity: 0.7;
+}
+
+@keyframes system-message-appear {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 0.8;
+        transform: scale(1);
+    }
+}
+
+/* ذرات متحرک در پس‌زمینه */
+.particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(to right, var(--primary-color), #7b68ee);
+    box-shadow: 0 0 10px var(--primary-color), 0 0 20px rgba(123, 104, 238, 0.4);
+    opacity: 0.15;
+    pointer-events: none;
+}
+
+@keyframes float-particle {
+    0% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+    }
+    25% {
+        transform: translateY(-30vh) translateX(20vw) rotate(90deg);
+    }
+    50% {
+        transform: translateY(-15vh) translateX(40vw) rotate(180deg);
+    }
+    75% {
+        transform: translateY(10vh) translateX(10vw) rotate(270deg);
+    }
+    100% {
+        transform: translateY(0) translateX(0) rotate(360deg);
+    }
+}
+
+/* افکت گلو برای دکمه‌ها */
+.glow-effect {
+    position: relative;
+    overflow: hidden;
+}
+
+.glow-effect:after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: linear-gradient(45deg, #4D9FFF, #7b68ee);
+    opacity: 0;
+    border-radius: inherit;
+    z-index: -1;
+    transition: opacity 0.3s ease;
+}
+
+.glow-effect:hover:after {
+    opacity: 0.4;
+    animation: pulse-glow 1.5s infinite;
+}
+
+@keyframes pulse-glow {
+    0% {
+        transform: scale(1);
+        opacity: 0.4;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.2;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.4;
+    }
+}
+
+/* خط متحرک زیر حباب پیام */
+.message-bubble {
+    position: relative;
+    overflow: visible;
+}
+
+.message-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(to right, var(--primary-color), #7b68ee);
+    transition: width 0.3s ease;
+}
+
+.message:hover .message-bubble::after {
+    width: 100%;
+}
+
+/* دکمه‌ها افکت لمسی بهتر در موبایل */
+@media (max-width: 768px) {
+    .button, button, .send-button, .file-upload-button, .web-search-button, .thinker-button {
+        transform: scale(1.1);
+        margin: 0 6px;
+    }
+    
+    .input-buttons {
+        padding: 10px 0;
+    }
+}

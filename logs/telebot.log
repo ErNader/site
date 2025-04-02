@@ -1,0 +1,61 @@
+2025-04-02 20:20:05,353 - __main__ - INFO - Bot token loaded: 19756...bCMPT
+2025-04-02 20:20:05,354 - __main__ - INFO - Using Bale API URL: https://tapi.bale.ai/bot{0}/{1}
+2025-04-02 20:20:05,356 - __main__ - INFO - Starting bot...
+2025-04-02 20:20:05,362 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): tapi.bale.ai:443
+2025-04-02 20:20:07,195 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getMe HTTP/1.1" 200 117
+2025-04-02 20:20:07,196 - __main__ - INFO - Bot connected successfully! Bot info - ID: 1975677609, Username: 313chatbot, Name: 313chatbot
+2025-04-02 20:20:07,197 - __main__ - INFO - Start polling for messages...
+2025-04-02 20:20:07,607 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getMe HTTP/1.1" 200 117
+2025-04-02 20:20:07,610 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): tapi.bale.ai:443
+2025-04-02 20:20:09,317 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:09,727 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:10,184 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:10,852 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:11,271 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:11,730 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:12,202 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:12,643 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:13,063 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:13,505 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:14,018 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:14,545 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:15,016 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:15,446 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:16,015 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:16,439 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:17,006 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:17,434 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:17,892 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:18,310 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:18,781 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:19,216 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:19,636 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:20,059 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:20,505 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:20,928 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:21,361 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:21,800 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:22,216 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:22,641 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:23,146 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:23,680 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:24,171 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:24,786 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:25,225 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:25,664 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:26,261 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:26,689 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:27,261 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:27,682 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:28,139 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:28,560 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:28,992 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:29,419 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:29,866 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:30,299 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:30,730 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:31,228 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:31,727 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:32,162 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:32,978 - urllib3.connectionpool - DEBUG - https://tapi.bale.ai:443 "GET /bot1975677609:uVT1f1Z5Kzf98eRtWypJdywA6lBAD1P4GeqbCMPT/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-04-02 20:20:32,979 - __main__ - INFO - Bot stopped.
