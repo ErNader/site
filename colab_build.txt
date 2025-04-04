@@ -1,0 +1,107 @@
+# راهنمای ساخت APK با استفاده از Google Colab
+
+برای ساخت سریع فایل APK بدون نیاز به نصب لینوکس، می‌توانید از Google Colab استفاده کنید. مراحل زیر را دنبال کنید:
+
+## 1. آماده‌سازی فایل‌ها
+
+تمام فایل‌های پوشه `android_app` را بصورت یک فایل فشرده ZIP در آورید.
+
+## 2. استفاده از Google Colab
+
+1. به آدرس [Google Colab](https://colab.research.google.com/) بروید
+2. یک notebook جدید ایجاد کنید
+3. کدهای زیر را در آن وارد کنید و اجرا نمایید:
+
+```python
+# نصب buildozer و وابستگی‌های آن
+!pip install buildozer
+!pip install cython==0.29.19
+
+# نصب وابستگی‌های سیستمی مورد نیاز
+!apt-get update
+!apt-get install -y \
+    python3-pip \
+    build-essential \
+    git \
+    python3 \
+    python3-dev \
+    ffmpeg \
+    libsdl2-dev \
+    libsdl2-image-dev \
+    libsdl2-mixer-dev \
+    libsdl2-ttf-dev \
+    libportmidi-dev \
+    libswscale-dev \
+    libavformat-dev \
+    libavcodec-dev \
+    zlib1g-dev
+
+!apt-get install -y \
+    libgstreamer1.0 \
+    gstreamer1.0-plugins-base \
+    gstreamer1.0-plugins-good
+
+!apt-get install -y \
+    build-essential \
+    libsqlite3-dev \
+    sqlite3 \
+    bzip2 \
+    libbz2-dev \
+    zlib1g-dev \
+    libssl-dev \
+    openssl \
+    libgdbm-dev \
+    libgdbm-compat-dev \
+    liblzma-dev \
+    libreadline-dev \
+    libncursesw5-dev \
+    libffi-dev \
+    uuid-dev
+
+!apt-get install -y \
+    libffi-dev \
+    autoconf \
+    automake \
+    cmake \
+    libltdl-dev \
+    libtool \
+    openjdk-8-jdk \
+    pkg-config
+
+# آپلود فایل‌های پروژه
+from google.colab import files
+uploaded = files.upload()  # اینجا فایل ZIP پروژه خود را آپلود کنید
+
+# استخراج فایل‌های پروژه
+!mkdir -p android_app
+!unzip -o *.zip -d android_app
+!cd android_app && ls -la
+
+# اجرای buildozer برای ساخت APK
+!cd android_app && buildozer android debug
+
+# دانلود فایل APK
+!ls -la android_app/bin/
+files.download("android_app/bin/yourappname-debug.apk")  # نام فایل APK را متناسب با نام پروژه خود تغییر دهید
+```
+
+## 3. نکات مهم
+
+- مطمئن شوید که فایل `buildozer.spec` در پوشه پروژه وجود دارد.
+- اطمینان حاصل کنید که فونت فارسی Vazirmatn در پوشه `assets` قرار دارد.
+- بعد از اتمام فرآیند ساخت، فایل APK در دایرکتوری `bin` ساخته می‌شود و به صورت خودکار برای شما دانلود می‌شود.
+
+## 4. رفع مشکلات احتمالی
+
+اگر در فرآیند ساخت به مشکلی برخوردید:
+
+1. اطمینان حاصل کنید که تمام وابستگی‌ها در فایل `buildozer.spec` به درستی تعریف شده‌اند.
+2. لاگ‌های خطا را بررسی کنید تا ببینید مشکل از کجاست.
+3. مطمئن شوید که مسیر فایل‌ها درست است.
+
+## 5. تست APK
+
+بعد از دانلود فایل APK:
+1. آن را به گوشی اندروید خود منتقل کنید
+2. از بخش تنظیمات گوشی، اجازه نصب برنامه‌های ناشناس را فعال کنید
+3. فایل APK را اجرا کنید تا برنامه نصب شود 
