@@ -1,94 +1,135 @@
-# دستیار هوشمند فارسی
+# AI Chat Application | اپلیکیشن چت هوش مصنوعی
 
-یک ربات چت هوشمند با پشتیبانی از زبان فارسی، قابلیت جستجو در وب، آپلود فایل و پردازش فرمول‌های ریاضی.
+A web-based chat application powered by AI models through OpenRouter API, featuring authentication with Google OAuth.
 
-## امکانات
+یک اپلیکیشن چت تحت وب با قابلیت هوش مصنوعی که از API اپن‌روتر استفاده می‌کند و دارای احراز هویت با گوگل است.
 
-- رابط کاربری زیبا با تم تاریک و پویانمایی ستاره‌ها
-- پشتیبانی از مارک‌داون برای فرمت‌دهی متن
-- نمایش فرمول‌های ریاضی با استفاده از KaTeX
-- هایلایت کردن کد برنامه‌نویسی
-- آپلود فایل با نمایش پیش‌نمایش
-- جستجو در وب
-- امکان ورود با گوگل و گیتهاب
-- سازگار با دستگاه‌های موبایل
+## Features | امکانات
 
-## پیش‌نیازها
+- Chat with AI models through OpenRouter API | چت با مدل‌های هوش مصنوعی از طریق API اپن‌روتر
+- Google OAuth authentication | احراز هویت با گوگل
+- Support for mathematical formulas (KaTeX) | پشتیبانی از فرمول‌های ریاضی
+- Code syntax highlighting | نمایش کد با رنگ‌آمیزی نحوی
+- Responsive design | طراحی واکنش‌گرا
 
-- Python 3.8 یا بالاتر
-- Flask
-- SQLAlchemy
-- OpenRouter API Key
+## Setup | راه‌اندازی
 
-## نصب و راه‌اندازی
-
-1. ابتدا مخزن را کلون کنید:
+1. Clone the repository | کلون کردن مخزن
 ```bash
-git clone https://github.com/yourusername/persian-ai-assistant.git
-cd persian-ai-assistant
+git clone [repository-url]
+cd [repository-name]
 ```
 
-2. محیط مجازی ایجاد کنید و وابستگی‌ها را نصب کنید:
+2. Install dependencies | نصب وابستگی‌ها
 ```bash
-python -m venv venv
-source venv/bin/activate  # در ویندوز: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-3. فایل `.env` را در دایرکتوری اصلی پروژه ایجاد کنید:
+3. Create `.env` file | ایجاد فایل `.env`
 ```
-FLASK_SECRET_KEY=your-secret-key-here
-OPENROUTER_API_KEY=your-openrouter-api-key
-
-# Google OAuth settings
-GOOGLE_CLIENT_ID=your-google-client-id
-GOOGLE_CLIENT_SECRET=your-google-client-secret
-
-# GitHub OAuth settings
-GITHUB_CLIENT_ID=your-github-client-id
-GITHUB_CLIENT_SECRET=your-github-client-secret
+OPENROUTER_API_KEY=your_api_key
+FLASK_SECRET_KEY=your_secret_key
 ```
 
-4. سرور فلسک را اجرا کنید:
+4. Run the application | اجرای برنامه
 ```bash
-flask run
+python app.py
 ```
 
-5. برنامه را در مرورگر خود باز کنید: http://localhost:5000
+## Environment Variables | متغیرهای محیطی
 
-## تنظیم OAuth برای گوگل و گیتهاب
+- `OPENROUTER_API_KEY`: Your OpenRouter API key | کلید API اپن‌روتر شما
+- `FLASK_SECRET_KEY`: Secret key for Flask sessions | کلید مخفی برای نشست‌های فلسک
 
-### تنظیم OAuth گوگل
+## Contributing | مشارکت
 
-1. به [Google Cloud Console](https://console.cloud.google.com/) بروید.
-2. یک پروژه جدید ایجاد کنید.
-3. به بخش "APIs & Services" > "Credentials" بروید.
-4. روی "Create Credentials" کلیک کنید و "OAuth client ID" را انتخاب کنید.
-5. نوع برنامه را "Web application" انتخاب کنید.
-6. در بخش "Authorized redirect URIs" آدرس زیر را اضافه کنید:
-   - `http://localhost:5000/login/google/callback`
-   - اگر در سرور دیگری مستقر کرده‌اید، آدرس آن را متناسب با سرور خود تغییر دهید.
-7. روی "Create" کلیک کنید.
-8. Client ID و Client Secret دریافت شده را در فایل `.env` خود وارد کنید.
+Feel free to submit issues and enhancement requests | لطفاً مشکلات و پیشنهادات بهبود را ارسال کنید.
 
-### تنظیم OAuth گیتهاب
+## License | مجوز
 
-1. به [GitHub Developer Settings](https://github.com/settings/developers) بروید.
-2. روی "New OAuth App" کلیک کنید.
-3. نام برنامه و URL را پر کنید.
-4. در فیلد "Authorization callback URL" آدرس زیر را وارد کنید:
-   - `http://localhost:5000/login/github/callback`
-   - اگر در سرور دیگری مستقر کرده‌اید، آدرس آن را متناسب با سرور خود تغییر دهید.
-5. روی "Register application" کلیک کنید.
-6. Client ID نمایش داده می‌شود و می‌توانید یک Client Secret ایجاد کنید.
-7. این مقادیر را در فایل `.env` خود وارد کنید.
+MIT
 
-## نکات مهم
+## بخش‌های پروژه
 
-1. اگر خطای 404 در هنگام احراز هویت گیتهاب دریافت می‌کنید، مطمئن شوید که Callback URL در تنظیمات برنامه گیتهاب دقیقاً با آدرس برنامه شما مطابقت دارد.
-2. مطمئن شوید که API گوگل و گیتهاب فعال هستند.
-3. برای استفاده در محیط تولید، حتماً از HTTPS استفاده کنید.
+این پروژه شامل دو قسمت اصلی است:
+
+1. **نسخه وب/سرور**: یک برنامه Flask که در دایرکتوری اصلی قرار دارد و قابلیت‌های زیر را ارائه می‌دهد:
+   - رابط کاربری تحت وب
+   - پشتیبانی از ذخیره گفتگوها در پایگاه داده
+   - قابلیت‌های پیشرفته مانند استفاده از ربات تلگرام و بله
+
+2. **نسخه اندروید**: یک اپلیکیشن اندروید مستقل که در پوشه `android_app` قرار دارد و قابلیت‌های زیر را ارائه می‌دهد:
+   - رابط کاربری بومی اندروید
+   - مدیریت کلیدهای API
+   - کارکرد بدون نیاز به سرور اختصاصی
+
+## نسخه اندروید
+
+### ویژگی‌ها
+
+- رابط کاربری ساده و زیبا با پشتیبانی کامل از زبان فارسی
+- مدیریت چندین کلید API برای دور زدن محدودیت استفاده روزانه
+- ذخیره و مدیریت گفتگوها
+- امکان استفاده آفلاین از گفتگوهای ذخیره شده
+- پشتیبانی از تم تاریک
+
+### ساخت نسخه اندروید
+
+برای ساخت نسخه اندروید، به پوشه `android_app` مراجعه کنید و دستورالعمل‌های موجود در فایل `BUILD_INSTRUCTIONS.md` را دنبال کنید.
+
+اطلاعات کامل در مورد نحوه ساخت APK، پیش‌نیازها و مراحل نصب در این فایل ارائه شده است.
+
+## نسخه وب
+
+### ویژگی‌ها
+
+- رابط کاربری وب با پشتیبانی از دستگاه‌های مختلف
+- پشتیبانی از فرمول‌های ریاضی و کد
+- مدیریت متمرکز کلیدهای API
+- امکان استفاده از وب‌هوک برای ربات‌های تلگرام و بله
+- ذخیره‌سازی گفتگوها در پایگاه داده SQLite
+
+### راه‌اندازی نسخه وب
+
+برای راه‌اندازی نسخه وب، دستورات زیر را اجرا کنید:
+
+```bash
+# نصب وابستگی‌ها
+pip install -r requirements.txt
+
+# تنظیم متغیرهای محیطی
+cp .env.example .env
+# فایل .env را ویرایش کنید و کلید API خود را وارد کنید
+
+# اجرای برنامه
+python app.py
+```
+
+## مدیریت API کلیدها
+
+هر دو نسخه وب و اندروید از سیستم مدیریت کلیدهای متعدد API پشتیبانی می‌کنند:
+
+- **تغییر خودکار کلید**: وقتی یک کلید به محدودیت استفاده می‌رسد، سیستم به طور خودکار از کلید بعدی استفاده می‌کند.
+- **ریست روزانه**: شمارنده استفاده از کلیدها هر روز ریست می‌شود.
+- **مدیریت وضعیت کلیدها**: می‌توانید کلیدهای غیرفعال را تشخیص دهید و مدیریت کنید.
+
+## مدل‌های پشتیبانی شده
+
+این دستیار از مدل‌های متعدد از طریق API OpenRouter پشتیبانی می‌کند:
+
+- Claude 3 Opus
+- Claude 3 Sonnet
+- Claude 3 Haiku
+- GPT-4o
+- GPT-4
+- Gemma 7B
+- Mistral Large
+- و سایر مدل‌های رایگان یا پولی که توسط OpenRouter ارائه می‌شوند
 
 ## مجوز
 
-این پروژه تحت مجوز MIT منتشر شده است. 
+این پروژه تحت مجوز MIT منتشر شده است.
+
+## مشارکت
+
+مشارکت در این پروژه آزاد است. لطفاً برای هرگونه پیشنهاد یا بهبود، یک Pull Request ارسال کنید. 

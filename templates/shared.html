@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ conversation.title }} - دستیار هوشمند فارسی</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .shared-banner {
+            background: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .shared-banner a {
+            color: white;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        .shared-banner a:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .shared-header {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .shared-title {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin: 0;
+        }
+        
+        .shared-meta {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        
+        .shared-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .chat-messages {
+            padding: 20px;
+        }
+        
+        .create-account-cta {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-top: 30px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+        
+        .create-account-cta h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .cta-button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--radius);
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        
+        .cta-button:hover {
+            background: var(--primary-hover);
+        }
+        
+        .cta-button.secondary {
+            background: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .cta-button.secondary:hover {
+            background: rgba(74, 107, 223, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="shared-banner">
+        <span>این یک گفتگوی به اشتراک گذاشته شده است</span>
+        <a href="{{ url_for('home') }}">بازگشت به صفحه اصلی</a>
+    </div>
+    
+    <div class="shared-container">
+        <div class="shared-header">
+            <h1 class="shared-title">{{ conversation.title }}</h1>
+            <div class="shared-meta">
+                <span><i class="far fa-calendar"></i> {{ conversation.created_at.strftime('%Y/%m/%d') }}</span>
+                <span><i class="far fa-comments"></i> {{ messages|length }} پیام</span>
+            </div>
+        </div>
+        
+        <div class="chat-messages">
+            {% for message in messages %}
+            <div class="message {% if message.role == 'user' %}user-message{% else %}bot-message{% endif %}">
+                <div class="message-content markdown-body">
+                    {{ message.content | safe }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="create-account-cta">
+            <h3>می‌خواهید دستیار هوشمند فارسی خود را داشته باشید؟</h3>
+            <p>همین حالا ثبت‌نام کنید و از تمام امکانات دستیار هوشمند فارسی بهره‌مند شوید.</p>
+            <div class="cta-buttons">
+                <a href="{{ url_for('register') }}" class="cta-button">ایجاد حساب کاربری</a>
+                <a href="{{ url_for('login') }}" class="cta-button secondary">ورود به حساب</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    
+    <script>
+        // ست کردن تم پیش‌فرض
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            
+            // Process existing messages
+            const messageContents = document.querySelectorAll('.message-content');
+            
+            messageContents.forEach(content => {
+                // Process math formulas
+                if (window.katex) {
+                    processMathFormulas(content);
+                }
+                
+                // Apply syntax highlighting to code blocks
+                const codeBlocks = content.querySelectorAll('pre code');
+                if (window.hljs) {
+                    codeBlocks.forEach(block => {
+                        hljs.highlightElement(block);
+                    });
+                }
+            });
+        });
+        
+        // Process math formulas with KaTeX
+        function processMathFormulas(element) {
+            if (!window.katex) return;
+            
+            try {
+                // First, mark all existing KaTeX elements so we don't process them again
+                const existingKatex = element.querySelectorAll('.katex, .katex-display');
+                existingKatex.forEach(el => {
+                    el.setAttribute('data-processed', 'true');
+                });
+                
+                // Process block math with $$ ... $$ delimiters
+                const blockMathRegex = /\$\$([\s\S]*?)\$\$/g;
+                let matches = element.innerHTML.match(blockMathRegex);
+                if (matches) {
+                    matches.forEach(match => {
+                        const formula = match.slice(2, -2).trim();
+                        try {
+                            const rendered = katex.renderToString(formula, {
+                                throwOnError: false,
+                                displayMode: true
+                            });
+                            element.innerHTML = element.innerHTML.replace(
+                                match, 
+                                `<div class="math-block">${rendered}</div>`
+                            );
+                        } catch (e) {
+                            console.error('KaTeX error:', e);
+                        }
+                    });
+                }
+                
+                // Process inline math with $ ... $ delimiters
+                const inlineMathRegex = /\$([^\$]+?)\$/g;
+                matches = element.innerHTML.match(inlineMathRegex);
+                if (matches) {
+                    matches.forEach(match => {
+                        const formula = match.slice(1, -1).trim();
+                        try {
+                            const rendered = katex.renderToString(formula, {
+                                throwOnError: false,
+                                displayMode: false
+                            });
+                            element.innerHTML = element.innerHTML.replace(
+                                match, 
+                                `<span class="math-inline">${rendered}</span>`
+                            );
+                        } catch (e) {
+                            console.error('KaTeX error:', e);
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Error processing math formulas:', error);
+            }
+        }
+    </script>
+</body>
+</html> 

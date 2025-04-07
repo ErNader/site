@@ -1,0 +1,3 @@
+# کلیدهای API را یکی در هر خط وارد کنید
+# مثال:
+# sk-or-v1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 

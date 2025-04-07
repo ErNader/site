@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مدیریت کلیدهای API - دستیار هوشمند فارسی</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .admin-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+        
+        .admin-title {
+            font-size: 1.5rem;
+            margin: 0;
+            color: var(--text-color);
+        }
+        
+        .back-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .back-link:hover {
+            color: var(--accent-color);
+        }
+        
+        .stats-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--input-bg);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+            color: var(--accent-color);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .api-keys-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0 2rem;
+        }
+        
+        .api-keys-table th, 
+        .api-keys-table td {
+            padding: 0.75rem 1rem;
+            text-align: right;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .api-keys-table th {
+            background-color: var(--card-bg);
+            font-weight: bold;
+            color: var(--text-secondary);
+        }
+        
+        .api-keys-table tbody tr:hover {
+            background-color: var(--hover-bg);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .status-active {
+            background-color: rgba(46, 213, 115, 0.2);
+            color: #2ed573;
+        }
+        
+        .status-inactive {
+            background-color: rgba(255, 71, 87, 0.2);
+            color: #ff4757;
+        }
+        
+        .add-key-form {
+            background: var(--input-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+        
+        .form-title {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--text-color);
+            font-family: 'Vazirmatn', 'Tahoma', sans-serif;
+        }
+        
+        .form-button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: 'Vazirmatn', 'Tahoma', sans-serif;
+            transition: background 0.2s;
+        }
+        
+        .form-button:hover {
+            background: var(--accent-hover);
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+        }
+        
+        .alert-success {
+            background-color: rgba(46, 213, 115, 0.2);
+            color: #2ed573;
+        }
+        
+        .alert-error {
+            background-color: rgba(255, 71, 87, 0.2);
+            color: #ff4757;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <header class="admin-header">
+            <h1 class="admin-title">مدیریت کلیدهای API</h1>
+            <a href="/chat" class="back-link">
+                <i class="fas fa-arrow-right"></i>
+                بازگشت به چت
+            </a>
+        </header>
+        
+        <div id="alert-container"></div>
+        
+        <div class="stats-panel">
+            <div class="stat-card">
+                <div class="stat-value" id="total-keys">-</div>
+                <div class="stat-label">کل کلیدها</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="working-keys">-</div>
+                <div class="stat-label">کلیدهای فعال</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="unused-keys">-</div>
+                <div class="stat-label">کلیدهای استفاده نشده امروز</div>
+            </div>
+        </div>
+        
+        <h2>لیست کلیدهای API</h2>
+        <table class="api-keys-table">
+            <thead>
+                <tr>
+                    <th>شناسه</th>
+                    <th>کلید API</th>
+                    <th>تعداد استفاده</th>
+                    <th>آخرین استفاده</th>
+                    <th>وضعیت</th>
+                </tr>
+            </thead>
+            <tbody id="api-keys-list">
+                <tr>
+                    <td colspan="5" style="text-align: center;">در حال بارگذاری...</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="add-key-form">
+            <h3 class="form-title">افزودن کلید API جدید</h3>
+            <form id="add-key-form">
+                <div class="form-group">
+                    <label for="api-key" class="form-label">کلید API OpenRouter</label>
+                    <input
+                        type="text"
+                        id="api-key"
+                        name="api_key"
+                        class="form-input"
+                        placeholder="کلید را وارد کنید (باید با sk-or-v1- شروع شود)"
+                        required
+                    >
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="form-button">
+                        افزودن کلید
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // بارگذاری اطلاعات کلیدها
+            fetchKeyStats();
+            
+            // تنظیم ارسال فرم افزودن کلید
+            document.getElementById('add-key-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                addNewApiKey();
+            });
+        });
+        
+        // نمایش پیام هشدار
+        function showAlert(message, type = 'success') {
+            const container = document.getElementById('alert-container');
+            
+            // ایجاد هشدار
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            
+            // افزودن دکمه بستن
+            const closeBtn = document.createElement('span');
+            closeBtn.innerHTML = '&times;';
+            closeBtn.style.float = 'left';
+            closeBtn.style.cursor = 'pointer';
+            closeBtn.style.fontWeight = 'bold';
+            closeBtn.style.fontSize = '1.2rem';
+            closeBtn.onclick = function() {
+                container.removeChild(alert);
+            };
+            
+            alert.appendChild(closeBtn);
+            container.appendChild(alert);
+            
+            // حذف خودکار بعد از 5 ثانیه
+            setTimeout(() => {
+                try {
+                    container.removeChild(alert);
+                } catch(e) {}
+            }, 5000);
+        }
+        
+        // دریافت اطلاعات کلیدها
+        async function fetchKeyStats() {
+            try {
+                const response = await fetch('/api/keys');
+                if (!response.ok) {
+                    throw new Error(`خطای HTTP: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                if (data.success) {
+                    updateStatsDisplay(data.stats);
+                } else {
+                    showAlert(data.message || 'خطا در دریافت اطلاعات', 'error');
+                }
+            } catch (error) {
+                console.error('Error fetching API key stats:', error);
+                showAlert('خطا در ارتباط با سرور', 'error');
+            }
+        }
+        
+        // به‌روزرسانی نمایش اطلاعات
+        function updateStatsDisplay(stats) {
+            // به‌روزرسانی شمارنده‌ها
+            document.getElementById('total-keys').textContent = stats.total_keys;
+            document.getElementById('working-keys').textContent = stats.working_keys;
+            document.getElementById('unused-keys').textContent = stats.unused_today;
+            
+            // به‌روزرسانی جدول کلیدها
+            const tableBody = document.getElementById('api-keys-list');
+            tableBody.innerHTML = '';
+            
+            if (stats.keys.length === 0) {
+                const emptyRow = document.createElement('tr');
+                emptyRow.innerHTML = '<td colspan="5" style="text-align: center;">هیچ کلیدی یافت نشد</td>';
+                tableBody.appendChild(emptyRow);
+                return;
+            }
+            
+            stats.keys.forEach(key => {
+                const row = document.createElement('tr');
+                
+                // شناسه
+                const indexCell = document.createElement('td');
+                indexCell.textContent = key.index + 1;
+                row.appendChild(indexCell);
+                
+                // پیش‌نمایش کلید API
+                const keyPreviewCell = document.createElement('td');
+                keyPreviewCell.textContent = key.preview;
+                row.appendChild(keyPreviewCell);
+                
+                // تعداد استفاده
+                const usesCell = document.createElement('td');
+                usesCell.textContent = `${key.uses} از ${key.max_daily}`;
+                row.appendChild(usesCell);
+                
+                // آخرین استفاده
+                const lastUsedCell = document.createElement('td');
+                lastUsedCell.textContent = key.last_used || 'استفاده نشده';
+                row.appendChild(lastUsedCell);
+                
+                // وضعیت
+                const statusCell = document.createElement('td');
+                const statusBadge = document.createElement('span');
+                statusBadge.className = `status-badge ${key.working ? 'status-active' : 'status-inactive'}`;
+                statusBadge.textContent = key.working ? 'فعال' : 'غیرفعال';
+                statusCell.appendChild(statusBadge);
+                row.appendChild(statusCell);
+                
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // افزودن کلید API جدید
+        async function addNewApiKey() {
+            const apiKeyInput = document.getElementById('api-key');
+            const apiKey = apiKeyInput.value.trim();
+            
+            if (!apiKey) {
+                showAlert('لطفاً کلید API را وارد کنید', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/keys', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ api_key: apiKey })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showAlert(data.message, 'success');
+                    apiKeyInput.value = ''; // پاک کردن فیلد
+                    fetchKeyStats(); // بارگذاری مجدد اطلاعات
+                } else {
+                    showAlert(data.message, 'error');
+                }
+            } catch (error) {
+                console.error('Error adding API key:', error);
+                showAlert('خطا در ارتباط با سرور', 'error');
+            }
+        }
+    </script>
+</body>
+</html> 

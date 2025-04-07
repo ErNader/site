@@ -12,10 +12,10 @@
     --error-bg: rgba(220, 38, 38, 0.1);
     --error-text: #ff4d4d;
     --error-border: rgba(220, 38, 38, 0.3);
-    --gradient-1: linear-gradient(45deg, #12c2e9, #c471ed, #f64f59);
-    --gradient-2: linear-gradient(45deg, #00dbde, #fc00ff);
+    --gradient-1: linear-gradient(135deg, #9c27b0, #e040fb, #7b1fa2);
+    --gradient-2: linear-gradient(45deg, #00bcd4, #2196f3);
     --gradient-3: linear-gradient(45deg, #8A2387, #E94057, #F27121);
-    --glow-color: rgba(0, 102, 255, 0.5);
+    --glow-color: rgba(156, 39, 176, 0.5);
 }
 
 * {
@@ -73,14 +73,14 @@ body {
 
 .auth-box {
     position: relative;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(30, 20, 40, 0.5);
     padding: 2.5rem;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-md);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(156, 39, 176, 0.2);
 }
 
 .auth-box::before {
@@ -106,20 +106,13 @@ body {
 }
 
 .auth-box h1 {
-    font-size: 2rem;
+    font-size: 2.2rem;
     margin-bottom: 1.5rem;
     text-align: center;
     color: white;
-    background: linear-gradient(to right, #12c2e9, #c471ed, #f64f59);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: glow 3s ease-in-out infinite alternate;
-}
-
-@keyframes glow {
-    from { text-shadow: 0 0 10px rgba(18, 194, 233, 0.6), 0 0 20px rgba(196, 113, 237, 0.6); }
-    to { text-shadow: 0 0 20px rgba(18, 194, 233, 0.8), 0 0 40px rgba(196, 113, 237, 0.8); }
+    font-weight: 700;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    letter-spacing: -0.5px;
 }
 
 .auth-form {
@@ -169,10 +162,11 @@ body {
     position: relative;
     background: transparent;
     color: white;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    padding: 0.85rem 1.5rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    padding: 1rem 1.5rem;
     border-radius: 50px;
     font-size: 1.1rem;
+    font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
     text-decoration: none;
@@ -181,6 +175,7 @@ body {
     margin-top: 1rem;
     overflow: hidden;
     z-index: 1;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .auth-button:before {
@@ -190,7 +185,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--gradient-2);
+    background: linear-gradient(45deg, #9c27b0, #e040fb);
     background-size: 200% 200%;
     opacity: 1;
     transition: all 0.3s ease;
@@ -199,7 +194,8 @@ body {
 
 .auth-button:hover {
     transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    border-color: transparent;
+    box-shadow: 0 10px 20px rgba(156, 39, 176, 0.3);
 }
 
 .auth-button:hover:before {
@@ -219,10 +215,11 @@ body {
 }
 
 .auth-links a {
-    color: #00dbde;
+    color: #e040fb;
     text-decoration: none;
     transition: all 0.3s ease;
     position: relative;
+    font-weight: 500;
 }
 
 .auth-links a:after {
@@ -270,40 +267,43 @@ body {
 }
 
 .social-button {
-    flex: 1;
-    padding: 0.75rem;
-    border-radius: var(--radius-sm);
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0.75rem 1.25rem;
+    border-radius: 50px;
+    background: rgba(30, 20, 40, 0.5);
     color: white;
     text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    width: 100%;
+    margin-bottom: 0.75rem;
     transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .social-button:hover {
-    background: rgba(255, 255, 255, 0.1);
     transform: translateY(-3px);
+    box-shadow: 0 7px 15px rgba(0, 0, 0, 0.2);
 }
 
 .google-button {
-    background: rgba(234, 67, 53, 0.1);
-    border-color: rgba(234, 67, 53, 0.3);
+    background: linear-gradient(45deg, rgba(219, 68, 55, 0.8), rgba(219, 68, 55, 0.6));
+    border: none;
 }
 
 .google-button:hover {
-    background: rgba(234, 67, 53, 0.2);
+    background: linear-gradient(45deg, rgba(219, 68, 55, 0.9), rgba(219, 68, 55, 0.7));
 }
 
 .github-button {
-    background: rgba(36, 41, 46, 0.1);
-    border-color: rgba(36, 41, 46, 0.3);
+    background: linear-gradient(45deg, rgba(51, 51, 51, 0.8), rgba(51, 51, 51, 0.6));
+    border: none;
 }
 
 .github-button:hover {
-    background: rgba(36, 41, 46, 0.2);
+    background: linear-gradient(45deg, rgba(51, 51, 51, 0.9), rgba(51, 51, 51, 0.7));
 }
 
 .divider {

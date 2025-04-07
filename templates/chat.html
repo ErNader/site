@@ -16,71 +16,52 @@
     <div class="stars" id="stars"></div>
     
     <div class="app-container">
-        <!-- Sidebar -->
-        <aside class="sidebar" id="sidebar">
+        <!-- Sidebar for conversations list -->
+        <aside class="sidebar">
             <div class="sidebar-header">
-                <div class="logo-container">
-                    <h2 class="gradient-text">دستیار هوشمند</h2>
-                </div>
-                <button id="new-chat" class="new-chat-button glow-button">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                    </svg>
-                    گفتگوی جدید
-                </button>
-            </div>
-            
-            <div class="conversations-list">
-                {% for conv in conversations %}
-                <a href="{{ url_for('chat', conversation_id=conv.id) }}" class="conversation-item {% if conv.id == current_conversation_id %}active{% endif %}">
-                    <div class="conversation-info">
-                        <div class="conversation-title">{{ conv.title }}</div>
-                        <div class="conversation-preview">{{ conv.last_message }}</div>
-                        <div class="conversation-meta">
-                            <span class="message-count">{{ conv.message_count }} پیام</span>
-                            <span class="conversation-date">{{ conv.created_at.strftime('%Y/%m/%d') }}</span>
-                        </div>
-                    </div>
-                    <div class="conversation-actions">
-                        <button class="edit-title" data-id="{{ conv.id }}" title="ویرایش عنوان">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                            </svg>
-                        </button>
-                        <button class="delete-conversation" data-id="{{ conv.id }}" title="حذف گفتگو">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="3 6 5 6 21 6"></polyline>
-                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                            </svg>
-                        </button>
-                    </div>
+                <h2 class="sidebar-title">گفتگوها</h2>
+                <a href="/new" class="new-chat-btn">
+                    <span class="icon-plus">+</span>
+                    <span>گفتگوی جدید</span>
                 </a>
+            </div>
+            <div class="conversations-list">
+                {% for conversation in conversations %}
+                    <a href="/chat/{{ conversation.id }}" class="conversation-item {% if current_conversation_id == conversation.id %}active{% endif %}">
+                        <span class="conversation-title">{{ conversation.title }}</span>
+                        <form method="post" action="/delete/{{ conversation.id }}" class="delete-form">
+                            <button type="submit" class="delete-btn" aria-label="حذف">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </a>
                 {% endfor %}
             </div>
-            
             <div class="sidebar-footer">
-                <div class="user-info">
-                    <span class="username gradient-text">{{ current_user.username }}</span>
-                    <a href="{{ url_for('logout') }}" class="logout-button">
-                        <i class="fas fa-sign-out-alt"></i> خروج
-                    </a>
-                </div>
+                {% if is_admin() %}
+                <a href="/admin/keys" class="admin-btn">
+                    <i class="fas fa-key"></i>
+                    مدیریت کلیدهای API
+                </a>
+                {% endif %}
+                <a href="#" id="logout-btn" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    خروج
+                </a>
             </div>
         </aside>
 
         <!-- Main Chat Area -->
         <main class="chat-area">
-            <header class="chat-header animated-header">
-                <button id="toggle-sidebar" class="toggle-sidebar" title="نمایش/مخفی کردن منو">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="3" y1="12" x2="21" y2="12"></line>
-                        <line x1="3" y1="6" x2="21" y2="6"></line>
-                        <line x1="3" y1="18" x2="21" y2="18"></line>
-                    </svg>
+            <header class="chat-header">
+                <button id="toggle-sidebar" class="toggle-sidebar" aria-label="منو">
+                    <div class="hamburger-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
                 </button>
-                <h1 class="chat-title gradient-text">
+                <h1 class="chat-title">
                     {% if current_conversation_id %}
                         {% for conv in conversations %}
                             {% if conv.id == current_conversation_id %}
@@ -91,13 +72,42 @@
                         گفتگوی جدید
                     {% endif %}
                 </h1>
+                <div class="header-controls">
+                    {% if current_conversation_id %}
+                    <div class="dropdown">
+                        <button id="download-button" class="header-btn" aria-label="دانلود گفتگو">
+                            <i class="fas fa-download"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="{{ url_for('download_conversation', conversation_id=current_conversation_id, format='txt') }}" class="dropdown-item">
+                                <i class="fas fa-file-alt"></i> متن ساده (TXT)
+                            </a>
+                            <a href="{{ url_for('download_conversation', conversation_id=current_conversation_id, format='md') }}" class="dropdown-item">
+                                <i class="fas fa-file-code"></i> مارک‌داون (MD)
+                            </a>
+                            <a href="{{ url_for('download_conversation', conversation_id=current_conversation_id, format='json') }}" class="dropdown-item">
+                                <i class="fas fa-file-code"></i> JSON
+                            </a>
+                            <a href="{{ url_for('download_conversation', conversation_id=current_conversation_id, format='html') }}" class="dropdown-item">
+                                <i class="fas fa-file-code"></i> HTML
+                            </a>
+                        </div>
+                    </div>
+                    <button id="share-button" class="header-btn" aria-label="اشتراک‌گذاری گفتگو">
+                        <i class="fas fa-share-alt"></i>
+                    </button>
+                    {% endif %}
+                    <button id="theme-toggle" class="theme-toggle" aria-label="تغییر تم">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
             </header>
 
             <div class="chat-messages" id="chat-messages">
                 {% if messages %}
                     {% for message in messages %}
                     <div class="message {% if message.role == 'user' %}user-message{% else %}bot-message{% endif %}">
-                        <div class="message-content markdown-body">
+                        <div class="message-content markdown-body" data-message-content="{{ message.content }}">
                             {{ message.content | safe }}
                         </div>
                     </div>
@@ -230,7 +240,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="{{ url_for('static', filename='script-simple.js') }}"></script>
     
     <!-- Stars Animation Script -->
     <script>
